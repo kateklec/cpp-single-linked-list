@@ -170,34 +170,25 @@ public:
         return ConstIterator(end());
     }
 
-
-   private:
+    private:
         template <typename InputIterator>
         void Assign(InputIterator from, InputIterator to) {
             SingleLinkedList tmp;
+            Iterator pos = tmp.before_begin();
             for (auto it = from; it != to; ++it) {
-                tmp.PushFront(*it);
+                pos = InsertAfter(pos, *it);
+                tmp.size_++;
             }
             swap(tmp);
         }
 
   public:
-
       SingleLinkedList(std::initializer_list<Type> values) {
-          vector<Type> g(values);
-          size_ = 0;
-          Assign(g.rbegin(), g.rend());
+          Assign(values.begin(), values.end());
       }
 
       SingleLinkedList(const SingleLinkedList& other) {
-          size_ = 0;
-          vector<Type> g;
-          for (auto value : other) {
-              g.push_back(value);
-          }
-          SingleLinkedList tmp;
-          tmp.Assign(g.rbegin(), g.rend());
-          swap(tmp);
+          Assign(other.begin(), other.end());
       }
 
     SingleLinkedList& operator=(const SingleLinkedList& rhs) {
@@ -282,7 +273,7 @@ public:
     }
 
     void PopFront() noexcept {
-        assert(head_.next_node != nullptr);
+        assert(!IsEmpty());
     	Node* old_front = head_.next_node;
     	head_.next_node = head_.next_node->next_node;
     	delete old_front;
