@@ -176,8 +176,7 @@ public:
             SingleLinkedList tmp;
             Iterator pos = tmp.before_begin();
             for (auto it = from; it != to; ++it) {
-                pos = InsertAfter(pos, *it);
-                tmp.size_++;
+                pos = tmp.InsertAfter(pos, *it);
             }
             swap(tmp);
         }
